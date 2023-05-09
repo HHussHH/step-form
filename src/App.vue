@@ -1,6 +1,4 @@
-<script >
-
-
+<script>
 export default {
   data() {
     return {
@@ -25,9 +23,9 @@ export default {
           value: "",
           validate: this.checkNubmerValidation,
           isError: false,
-        }
+        },
       ],
-      page: 1,
+      page: 2,
       stepInfo: [
         {
           stepNumber: 1,
@@ -49,20 +47,21 @@ export default {
           stepTitle: "SUMMARY",
           isActive: false,
         },
-      ]
-    }
+      ],
+    };
   },
   methods: {
     checkEmailValidation(email) {
-
-      if (email.replace(/\s+/g, "").includes("@") && email.replace(/\s+/g, "").includes(".")) {
+      if (
+        email.replace(/\s+/g, "").includes("@") &&
+        email.replace(/\s+/g, "").includes(".")
+      ) {
         this.inputFields[1].isError = false;
       } else {
         this.inputFields[1].isError = true;
       }
     },
     checkNameValidation(name) {
-
       if (name.replace(/\s+/g, "").length >= 4) {
         this.inputFields[0].isError = false;
       } else {
@@ -70,7 +69,6 @@ export default {
       }
     },
     checkNubmerValidation(number) {
-
       if (number.replace(/\s+/g, "").length >= 11 && number.includes("+")) {
         this.inputFields[2].isError = false;
       } else {
@@ -80,16 +78,14 @@ export default {
     changePageUp() {
       if (this.page < 4) {
         this.page = this.page + 1;
-      }
-      else {
+      } else {
         this.page;
       }
     },
     changePageDown() {
       if (this.page > 1) {
         this.page = this.page - 1;
-      }
-      else {
+      } else {
         this.page;
       }
     },
@@ -105,28 +101,52 @@ export default {
         } else {
           stepInfo.isActive = false;
         }
-      })
-    }
+      });
+    },
   },
-
-
-}
+};
 </script>
 
 <template>
   <div>
-    <my-card :pages="page" :stepInfo="stepInfo" :changePage="changePage" :changePageUp="changePageUp"
-      :changePageDown="changePageDown">
-      <my-form v-if="page === 1" :fields="inputFields" />
+    <my-card
+      :pages="page"
+      :stepInfo="stepInfo"
+      :changePage="changePage"
+      :changePageUp="changePageUp"
+      :changePageDown="changePageDown"
+    >
+      <my-form
+        v-if="page === 1"
+        title="Personal info"
+        desc="Please provide your name, email adress, and phone number."
+      >
+        <my-input
+          v-for="input in inputFields"
+          :InputName="input.name"
+          :key="input.name"
+          :placeholder="input.placeholder"
+          :isError="input.isError"
+          v-model="input.value"
+          :validate="input.validate"
+        />
+      </my-form>
+
+      <my-form
+        v-if="page === 2"
+        title="Select your plan"
+        desc="You have the option of monthly or uearly billing."
+      >
+        <select-cards></select-cards>
+      </my-form>
     </my-card>
   </div>
 </template>
 
 <style lang="scss">
 body {
-  font-family: 'Ubuntu',
-    sans-serif;
-  background-color: #EEF5FF;
+  font-family: "Ubuntu", sans-serif;
+  background-color: #eef5ff;
 }
 
 *,
